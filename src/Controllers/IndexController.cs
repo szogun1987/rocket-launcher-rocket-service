@@ -19,11 +19,11 @@ namespace SzogunUI.RocketService.Controllers
         }
         
         [HttpPut]
-        [Route("locations/{latidute}/{longitude}")]
+        [Route("locations/{latitude}/{longitude}")]
         public IActionResult PutMissilesToLocation(
             [FromRoute]double latitude, 
             [FromRoute]double longitude, 
-            [FromBody] MissileSpec spec)
+            MissileSpec spec)
         {
             return Ok();
         }
