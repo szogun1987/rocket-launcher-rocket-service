@@ -6,7 +6,7 @@ namespace SzogunUI.RocketService.Controllers
     public class IndexController : Controller
     {
         [HttpGet]
-        [Route("missile-types/")]
+        [Route("missile-types")]
         public IActionResult GetMissileTypes()
         {
             return Ok(new[]

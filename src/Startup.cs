@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 
 namespace SzogunUI.RocketService
 {
@@ -30,15 +31,17 @@ namespace SzogunUI.RocketService
                 options.Authority = "https://rocket-launcher.eu.auth0.com/";
                 options.Audience = "http://rocket-service.com";
             });
-            
-            services.AddMvc(o =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                
-                o.Filters.Add(new AuthorizeFilter(policy));
-            });
+
+            services
+                .AddMvc(o =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+
+                    o.Filters.Add(new AuthorizeFilter(policy));
+                })
+                .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
