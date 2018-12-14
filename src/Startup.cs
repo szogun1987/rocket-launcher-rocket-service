@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -42,6 +37,14 @@ namespace SzogunUI.RocketService
                     o.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(configurePolicy =>
+                {
+                    configurePolicy.WithOrigins("http://localhost:8080").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +56,7 @@ namespace SzogunUI.RocketService
             }
 
             app.UseAuthentication();
+            app.UseCors();
 
             app.UseMvc();
         }
